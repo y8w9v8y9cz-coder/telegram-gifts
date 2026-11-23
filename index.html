@@ -191,6 +191,47 @@ input:focus{border-color:#73d992}
 
 <script>
 const tg = window.Telegram?.WebApp;
+ const API = "https://noir-gifts-bot.y8w9v8y9cz.workers.dev";
+
+async function registerTelegram() {
+  if (!tg?.initData) {
+    alert("Открой NOIR GIFTS через Telegram");
+    return;
+  }
+
+  const response = await fetch(API + "/api/register", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ initData: tg.initData })
+  });
+
+  const data = await response.json();
+
+  if (!response.ok || !data.ok) {
+    throw new Error(data.error || "Ошибка регистрации");
+  }
+
+  return data.user;
+}
+
+async function sendWithdrawalRequest(amount) {
+  const response = await fetch(API + "/api/request", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      initData: tg.initData,
+      amount: Number(amount)
+    })
+  });
+
+  const data = await response.json();
+
+  if (!response.ok || !data.ok) {
+    throw new Error(data.error || "Не удалось отправить заявку");
+  }
+
+  return data;
+}
 const API_URL = "https://noir-gifts-bot.y8w9v8y9cz.workers.dev";
 
 async function registerUser() {
