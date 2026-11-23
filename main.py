@@ -1,17 +1,39 @@
-
-from flask import Flask, send_from_directory
 import os
+from telegram import (
+    Update,
+    KeyboardButton,
+    ReplyKeyboardMarkup,
+    WebAppInfo
+)
+from telegram.ext import (
+    Application,
+    CommandHandler,
+    ContextTypes
+)
 
-app = Flask(__name__)
+SITE_URL = "https://y8w9v8y9cz-coder.github.io/telegram-gifts/"
 
-@app.route("/")
-def home():
-    return send_from_directory(".", "index.html")
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    keyboard = [[
+        KeyboardButton(
+            text="Открыть NOIR GIFTS",
+            web_app=WebAppInfo(url=SITE_URL)
+        )
+    ]]
 
-@app.route("/health")
-def health():
-    return {"status": "ok"}
+    await update.message.reply_text(
+        "Добро пожаловать в NOIR GIFTS 🖤\n\n"
+        "Нажми кнопку ниже, чтобы открыть приложение.",
+        reply_markup=ReplyKeyboardMarkup(
+            keyboard,
+            resize_keyboard=True
+        )
+    )
 
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 10000))
-    app.run(host="0.0.0.0", port=port)
+app = Application.builder().token(
+    os.environ["BOT_TOKEN"]
+).build()
+
+app.add_handler(CommandHandler("start", start))
+
+app.run_polling()
