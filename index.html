@@ -191,7 +191,33 @@ input:focus{border-color:#73d992}
 
 <script>
 const tg = window.Telegram?.WebApp;
+const API_URL = "https://noir-gifts-bot.y8w9v8y9cz.workers.dev";
 
+async function registerUser() {
+  if (!tg?.initData) return;
+
+  try {
+    const response = await fetch(`${API_URL}/api/register`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ initData: tg.initData })
+    });
+
+    const result = await response.json();
+
+    if (result.ok) {
+      console.log("NOIR GIFTS: пользователь зарегистрирован", result.profile);
+    } else {
+      console.error("Ошибка регистрации:", result.error);
+    }
+  } catch (error) {
+    console.error("Ошибка подключения к серверу:", error);
+  }
+}
+
+tg?.ready();
+tg?.expand();
+registerUser();
 if(tg){
  tg.ready();
  tg.expand();
