@@ -8,246 +8,235 @@
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 <style>
-* { box-sizing: border-box; }
-
-body {
-  margin: 0;
-  padding: 25px 18px 45px;
-  background:
-    radial-gradient(ellipse at 50% 0%, #173c27 0%, #080d09 48%);
-  color: #fff;
-  font-family: Arial, sans-serif;
+*{box-sizing:border-box}
+body{
+ margin:0;padding:22px 17px 40px;
+ background:radial-gradient(ellipse at 50% 0%,#173c27,#080d09 65%);
+ color:#fff;font-family:Arial,sans-serif
 }
-
-.header {
-  text-align: center;
-  padding: 22px 0;
+.header{text-align:center;padding:20px 0 25px}
+.logo{font-size:11px;letter-spacing:6px;color:#73d992}
+h1{font-size:34px;letter-spacing:4px;margin:12px 0}
+.subtitle{color:#8ca895;font-size:12px;letter-spacing:2px}
+.card{
+ background:linear-gradient(145deg,#172b1e,#101912);
+ border:1px solid #315b3c;border-radius:21px;
+ padding:22px;margin-top:18px;box-shadow:0 10px 35px #0005
 }
-
-.logo {
-  font-size: 11px;
-  letter-spacing: 6px;
-  color: #73d992;
+.balance{text-align:center;padding:27px 20px}
+.label{color:#91a897;font-size:11px;letter-spacing:2px}
+.balance-number{font-size:43px;font-weight:bold;color:#83e6a0;margin:17px 0}
+.notice{font-size:10px;color:#91a897;line-height:1.5}
+.section-title{font-size:17px;margin:3px 0 17px}
+button{
+ width:100%;padding:16px;margin-top:15px;
+ border:1px solid #5aaf70;border-radius:13px;
+ background:linear-gradient(100deg,#246d3a,#328a4d);
+ color:white;font-size:14px;font-weight:bold;cursor:pointer
 }
-
-h1 {
-  font-size: 34px;
-  letter-spacing: 4px;
-  margin: 12px 0 8px;
+button:active{transform:scale(.98)}
+.secondary{background:#101912;border-color:#315b3c}
+.gift-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.gift{
+ background:#0c1710;border:1px solid #284832;
+ border-radius:16px;padding:18px 10px;text-align:center;
+ cursor:pointer;transition:.15s
 }
-
-.subtitle {
-  color: #8ca895;
-  font-size: 12px;
-  letter-spacing: 2px;
+.gift:active{transform:scale(.97)}
+.gift-art{font-size:43px;margin:8px 0 14px}
+.gift-name{font-size:13px;font-weight:bold}
+.gift-info{color:#8ca393;font-size:11px;margin-top:7px}
+.profile{display:flex;align-items:center;gap:14px}
+.avatar{
+ width:48px;height:48px;border-radius:15px;background:#24432d;
+ display:grid;place-items:center;font-size:23px
 }
-
-.card {
-  background: linear-gradient(145deg, #172b1e, #101912);
-  border: 1px solid #315b3c;
-  border-radius: 21px;
-  padding: 23px;
-  margin-top: 19px;
-  box-shadow: 0 10px 35px #0005;
+.profile-name{font-weight:bold;margin-bottom:6px}
+.footer{text-align:center;color:#607b67;font-size:10px;
+ letter-spacing:2px;margin-top:30px}
+.page{display:none}
+.page.active{display:block}
+.back{background:#101912;border-color:#315b3c}
+input{
+ width:100%;padding:16px;margin-top:12px;
+ border-radius:12px;border:1px solid #315b3c;
+ background:#0b140e;color:white;font-size:15px;outline:none
 }
-
-.balance {
-  text-align: center;
-  padding: 29px 20px;
+input:focus{border-color:#73d992}
+.message{
+ background:#0c1710;border:1px solid #284832;
+ border-radius:15px;padding:19px;margin-top:17px;
+ color:#c5d4c9;font-size:13px;line-height:1.7
 }
-
-.label {
-  color: #91a897;
-  font-size: 11px;
-  letter-spacing: 2px;
-}
-
-.balance-number {
-  font-size: 43px;
-  font-weight: bold;
-  color: #83e6a0;
-  margin: 18px 0 10px;
-}
-
-.demo {
-  color: #779481;
-  font-size: 11px;
-}
-
-.section-title {
-  font-size: 17px;
-  margin: 4px 0 17px;
-}
-
-.gift-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-
-.gift {
-  background: #0c1710;
-  border: 1px solid #284832;
-  border-radius: 16px;
-  padding: 18px 10px;
-  text-align: center;
-}
-
-.gift-art {
-  font-size: 43px;
-  margin: 8px 0 14px;
-}
-
-.gift-name {
-  font-size: 13px;
-  font-weight: bold;
-}
-
-.gift-info {
-  color: #8ca393;
-  font-size: 11px;
-  margin-top: 7px;
-}
-
-button {
-  width: 100%;
-  padding: 16px;
-  margin-top: 17px;
-  border: 1px solid #5aaf70;
-  border-radius: 13px;
-  background: linear-gradient(100deg, #246d3a, #328a4d);
-  color: white;
-  font-size: 14px;
-  font-weight: bold;
-}
-
-button:active {
-  transform: scale(.98);
-}
-
-.profile {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.avatar {
-  width: 48px;
-  height: 48px;
-  border-radius: 15px;
-  background: #24432d;
-  display: grid;
-  place-items: center;
-  font-size: 23px;
-}
-
-.profile-name {
-  font-weight: bold;
-  margin-bottom: 6px;
-}
-
-.footer {
-  text-align: center;
-  color: #607b67;
-  font-size: 10px;
-  letter-spacing: 2px;
-  margin-top: 30px;
-}
+.message h3{color:#83e6a0;margin-top:0}
 </style>
 </head>
 
 <body>
 
 <header class="header">
-  <div class="logo">EXCLUSIVE COLLECTION</div>
-  <h1>NOIR GIFTS</h1>
-  <div class="subtitle">YOUR WORLD OF GIFTS</div>
+ <div class="logo">EXCLUSIVE COLLECTION</div>
+ <h1>NOIR GIFTS</h1>
+ <div class="subtitle">YOUR WORLD OF GIFTS</div>
 </header>
 
-<section class="card balance">
+<main id="home" class="page active">
+
+ <section class="card balance">
   <div class="label">YOUR BALANCE</div>
   <div class="balance-number">⭐ 100</div>
-  <div class="demo">BALANCE · STARS</div>
-</section>
+  <div class="notice">
+   Предварительное значение. Реальный баланс Stars пока не подключён.
+  </div>
+  <button onclick="openWithdraw()">ВЫВЕСТИ ⭐</button>
+ </section>
 
-<section class="card">
+ <section class="card">
   <h2 class="section-title">Коллекция подарков</h2>
-
   <div class="gift-grid">
 
-    <div class="gift">
-      <div class="gift-art">🎁</div>
-      <div class="gift-name">Mystery Box</div>
-      <div class="gift-info">В обработке</div>
-    </div>
+   <div class="gift" onclick="showGift('Mystery Box')">
+    <div class="gift-art">🎁</div>
+    <div class="gift-name">Mystery Box</div>
+    <div class="gift-info">Подробнее</div>
+   </div>
 
-    <div class="gift">
-      <div class="gift-art">🌹</div>
-      <div class="gift-name">Rose</div>
-      <div class="gift-info">В обработке</div>
-    </div>
+   <div class="gift" onclick="showGift('Rose')">
+    <div class="gift-art">🌹</div>
+    <div class="gift-name">Rose</div>
+    <div class="gift-info">Подробнее</div>
+   </div>
 
-    <div class="gift">
-      <div class="gift-art">💎</div>
-      <div class="gift-name">Diamond</div>
-      <div class="gift-info">Скоро появится</div>
-    </div>
+   <div class="gift" onclick="showGift('Diamond')">
+    <div class="gift-art">💎</div>
+    <div class="gift-name">Diamond</div>
+    <div class="gift-info">Подробнее</div>
+   </div>
 
-    <div class="gift">
-      <div class="gift-art">🧸</div>
-      <div class="gift-name">Teddy Bear</div>
-      <div class="gift-info">Скоро появится</div>
-    </div>
+   <div class="gift" onclick="showGift('Teddy Bear')">
+    <div class="gift-art">🧸</div>
+    <div class="gift-name">Teddy Bear</div>
+    <div class="gift-info">Подробнее</div>
+   </div>
 
   </div>
+ </section>
 
-  <button onclick="showCatalog()">
-    ОТКРЫТЬ КАТАЛОГ
-  </button>
-</section>
-
-<section class="card">
+ <section class="card">
   <h2 class="section-title">Личный кабинет</h2>
-
   <div class="profile">
-    <div class="avatar">♟</div>
-    <div>
-      <div class="profile-name" id="username">
-        Гость
-      </div>
-      <div class="label" id="userstatus">
-        PROFILE
-      </div>
-    </div>
+   <div class="avatar">♟</div>
+   <div>
+    <div class="profile-name" id="username">Гость</div>
+    <div class="label" id="userstatus">PROFILE</div>
+   </div>
   </div>
+ </section>
+</main>
+
+<section id="withdraw" class="page">
+ <section class="card">
+  <h2 class="section-title">Заявка на вывод ⭐</h2>
+  <p class="notice">
+   Здесь будет оформление заявки на получение Stars.
+   Сейчас доступен только предварительный просмотр формы.
+  </p>
+
+  <label class="label" for="phone">НОМЕР ТЕЛЕФОНА</label>
+  <input id="phone" type="tel" placeholder="+7 000 000-00-00"
+   autocomplete="off">
+
+  <label class="label" for="amount">КОЛИЧЕСТВО STARS</label>
+  <input id="amount" type="number" min="1" placeholder="Например, 50">
+
+  <div class="notice" style="margin-top:12px">
+   Данные этой формы не отправляются и не сохраняются.
+   Подтверждение Telegram должно проходить непосредственно
+   через официальный интерфейс Telegram.
+  </div>
+
+  <button onclick="previewRequest()">ПРОДОЛЖИТЬ</button>
+  <button class="back" onclick="goHome()">НАЗАД</button>
+ </section>
 </section>
 
-<div class="footer">
-  NOIR GIFTS · YOUR STAR BALANCE
-</div>
+<section id="giftpage" class="page">
+ <section class="card">
+  <div class="logo">NOIR GIFTS</div>
+  <div class="message">
+   <h3>Подарок скоро появится!</h3>
+   Спасибо за интерес к NOIR GIFTS. Мы продолжаем работу
+   над каталогом и готовим возможность взаимодействия
+   с подарками.
+
+   <p>
+   В данный момент этот раздел находится в разработке.
+   Мы хотим подготовить его так, чтобы всё работало
+   корректно и пользоваться им было удобно.
+   </p>
+
+   <p>
+   Пожалуйста, загляните немного позже. Как только
+   функция станет доступна, вы сможете воспользоваться
+   ею прямо в приложении.
+   </p>
+
+   Благодарим за ожидание и доверие к NOIR GIFTS.
+  </div>
+  <button class="back" onclick="goHome()">ВЕРНУТЬСЯ</button>
+ </section>
+</section>
+
+<div class="footer">NOIR GIFTS · YOUR WORLD OF GIFTS</div>
 
 <script>
-const tg = window.Telegram.WebApp;
+const tg = window.Telegram?.WebApp;
 
-tg.ready();
-tg.expand();
+if(tg){
+ tg.ready();
+ tg.expand();
 
-const user = tg.initDataUnsafe?.user;
-
-if (user) {
+ const user = tg.initDataUnsafe?.user;
+ if(user){
   document.getElementById("username").textContent =
-    user.first_name || "Пользователь";
-
+   user.first_name || "Пользователь";
   document.getElementById("userstatus").textContent =
-    "TELEGRAM CONNECTED";
+   "TELEGRAM CONNECTED";
+ }
 }
 
-function showCatalog() {
-  if (tg.showAlert) {
-    tg.showAlert("Каталог пока находится в разработке.");
-  } else {
-    alert("Каталог пока находится в разработке.");
-  }
+function showPage(id){
+ document.querySelectorAll(".page").forEach(page=>{
+  page.classList.remove("active");
+ });
+ document.getElementById(id).classList.add("active");
+ window.scrollTo(0,0);
+}
+
+function openWithdraw(){
+ showPage("withdraw");
+}
+
+function goHome(){
+ showPage("home");
+}
+
+function showGift(name){
+ showPage("giftpage");
+}
+
+function previewRequest(){
+ const amount = Number(document.getElementById("amount").value);
+
+ if(!amount || amount < 1){
+  alert("Укажите корректное количество Stars.");
+  return;
+ }
+
+ alert(
+  "Это предварительный просмотр формы. " +
+  "Заявки пока не отправляются: подключение сервера ещё не выполнено."
+ );
 }
 </script>
 
