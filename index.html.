@@ -3,92 +3,154 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gift Center</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NOIR GIFTS</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 <style>
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
-  padding: 25px 18px;
-  background: #080d09;
-  color: #ffffff;
+  padding: 25px 18px 45px;
+  background:
+    radial-gradient(ellipse at 50% 0%, #173c27 0%, #080d09 48%);
+  color: #fff;
   font-family: Arial, sans-serif;
 }
 
 .header {
   text-align: center;
-  margin-top: 25px;
+  padding: 22px 0;
 }
 
-.header h1 {
-  color: #70df89;
-  letter-spacing: 3px;
+.logo {
+  font-size: 11px;
+  letter-spacing: 6px;
+  color: #73d992;
+}
+
+h1 {
+  font-size: 34px;
+  letter-spacing: 4px;
+  margin: 12px 0 8px;
 }
 
 .subtitle {
-  color: #89998d;
-  font-size: 13px;
+  color: #8ca895;
+  font-size: 12px;
+  letter-spacing: 2px;
 }
 
 .card {
-  background: #14231a;
-  border: 1px solid #285638;
-  border-radius: 20px;
+  background: linear-gradient(145deg, #172b1e, #101912);
+  border: 1px solid #315b3c;
+  border-radius: 21px;
   padding: 23px;
-  margin-top: 22px;
+  margin-top: 19px;
+  box-shadow: 0 10px 35px #0005;
 }
 
 .balance {
   text-align: center;
-}
-
-.balance-number {
-  font-size: 42px;
-  font-weight: bold;
-  color: #75e58e;
-  margin: 15px 0;
+  padding: 29px 20px;
 }
 
 .label {
-  color: #9bac9f;
+  color: #91a897;
+  font-size: 11px;
+  letter-spacing: 2px;
+}
+
+.balance-number {
+  font-size: 43px;
+  font-weight: bold;
+  color: #83e6a0;
+  margin: 18px 0 10px;
+}
+
+.demo {
+  color: #779481;
+  font-size: 11px;
+}
+
+.section-title {
+  font-size: 17px;
+  margin: 4px 0 17px;
+}
+
+.gift-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.gift {
+  background: #0c1710;
+  border: 1px solid #284832;
+  border-radius: 16px;
+  padding: 18px 10px;
+  text-align: center;
+}
+
+.gift-art {
+  font-size: 43px;
+  margin: 8px 0 14px;
+}
+
+.gift-name {
   font-size: 13px;
+  font-weight: bold;
+}
+
+.gift-info {
+  color: #8ca393;
+  font-size: 11px;
+  margin-top: 7px;
 }
 
 button {
   width: 100%;
   padding: 16px;
-  border: none;
-  border-radius: 12px;
-  background: #247b40;
+  margin-top: 17px;
+  border: 1px solid #5aaf70;
+  border-radius: 13px;
+  background: linear-gradient(100deg, #246d3a, #328a4d);
   color: white;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: bold;
-  margin-top: 15px;
 }
 
 button:active {
-  background: #319b53;
+  transform: scale(.98);
 }
 
-.gift {
+.profile {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 14px;
 }
 
-.gift-icon {
-  font-size: 35px;
+.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 15px;
+  background: #24432d;
+  display: grid;
+  place-items: center;
+  font-size: 23px;
+}
+
+.profile-name {
+  font-weight: bold;
+  margin-bottom: 6px;
 }
 
 .footer {
   text-align: center;
-  color: #718176;
-  font-size: 11px;
+  color: #607b67;
+  font-size: 10px;
+  letter-spacing: 2px;
   margin-top: 30px;
 }
 </style>
@@ -96,43 +158,72 @@ button:active {
 
 <body>
 
-<div class="header">
-  <h1>GIFT CENTER</h1>
-  <div class="subtitle">Подарки и награды</div>
-</div>
+<header class="header">
+  <div class="logo">EXCLUSIVE COLLECTION</div>
+  <h1>NOIR GIFTS</h1>
+  <div class="subtitle">YOUR WORLD OF GIFTS</div>
+</header>
 
-<div class="card balance">
-  <div class="label">ТВОЙ БАЛАНС</div>
+<section class="card balance">
+  <div class="label">YOUR BALANCE</div>
   <div class="balance-number">⭐ 100</div>
-  <div class="label">Демонстрационные Stars</div>
-</div>
+  <div class="demo">DEMO BALANCE · NOT REAL STARS</div>
+</section>
 
-<div class="card">
-  <h3>🎁 Каталог подарков</h3>
+<section class="card">
+  <h2 class="section-title">Коллекция подарков</h2>
 
-  <div class="gift">
-    <div class="gift-icon">🎁</div>
+  <div class="gift-grid">
+
+    <div class="gift">
+      <div class="gift-art">🎁</div>
+      <div class="gift-name">Mystery Box</div>
+      <div class="gift-info">Скоро появится</div>
+    </div>
+
+    <div class="gift">
+      <div class="gift-art">🌹</div>
+      <div class="gift-name">Rose</div>
+      <div class="gift-info">Скоро появится</div>
+    </div>
+
+    <div class="gift">
+      <div class="gift-art">💎</div>
+      <div class="gift-name">Diamond</div>
+      <div class="gift-info">Скоро появится</div>
+    </div>
+
+    <div class="gift">
+      <div class="gift-art">🧸</div>
+      <div class="gift-name">Teddy Bear</div>
+      <div class="gift-info">Скоро появится</div>
+    </div>
+
+  </div>
+
+  <button onclick="showCatalog()">
+    ОТКРЫТЬ КАТАЛОГ
+  </button>
+</section>
+
+<section class="card">
+  <h2 class="section-title">Личный кабинет</h2>
+
+  <div class="profile">
+    <div class="avatar">♟</div>
     <div>
-      <b>Подарок</b>
-      <div class="label">Скоро появится</div>
+      <div class="profile-name" id="username">
+        Гость
+      </div>
+      <div class="label" id="userstatus">
+        DEMO PROFILE
+      </div>
     </div>
   </div>
-
-  <button onclick="showMessage()">
-    Посмотреть награды
-  </button>
-</div>
-
-<div class="card">
-  <h3>👤 Профиль</h3>
-  <div id="username">Пользователь Telegram</div>
-  <div class="label" id="userstatus">
-    Открой приложение через Telegram
-  </div>
-</div>
+</section>
 
 <div class="footer">
-  GIFT CENTER · DEMO VERSION
+  NOIR GIFTS · DEMO EDITION
 </div>
 
 <script>
@@ -148,11 +239,15 @@ if (user) {
     user.first_name || "Пользователь";
 
   document.getElementById("userstatus").textContent =
-    "Telegram подключён";
+    "TELEGRAM CONNECTED";
 }
 
-function showMessage() {
-  tg.showAlert("Это демонстрационная версия каталога!");
+function showCatalog() {
+  if (tg.showAlert) {
+    tg.showAlert("Каталог пока находится в разработке.");
+  } else {
+    alert("Каталог пока находится в разработке.");
+  }
 }
 </script>
 
