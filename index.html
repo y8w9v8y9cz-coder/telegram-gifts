@@ -34,8 +34,9 @@ button{
  background:linear-gradient(100deg,#246d3a,#328a4d);
  color:white;font-size:14px;font-weight:bold;cursor:pointer
 }
+button:disabled{opacity:.5}
 button:active{transform:scale(.98)}
-.secondary{background:#101912;border-color:#315b3c}
+.secondary,.back{background:#101912;border-color:#315b3c}
 .gift-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .gift{
  background:#0c1710;border:1px solid #284832;
@@ -56,7 +57,6 @@ button:active{transform:scale(.98)}
  letter-spacing:2px;margin-top:30px}
 .page{display:none}
 .page.active{display:block}
-.back{background:#101912;border-color:#315b3c}
 input{
  width:100%;padding:16px;margin-top:12px;
  border-radius:12px;border:1px solid #315b3c;
@@ -69,6 +69,7 @@ input:focus{border-color:#73d992}
  color:#c5d4c9;font-size:13px;line-height:1.7
 }
 .message h3{color:#83e6a0;margin-top:0}
+#status{margin-top:12px;line-height:1.6}
 </style>
 </head>
 
@@ -86,7 +87,7 @@ input:focus{border-color:#73d992}
   <div class="label">YOUR BALANCE</div>
   <div class="balance-number">⭐ 100</div>
   <div class="notice">
-   Предварительное значение. Реальный баланс Stars пока не подключён.
+   Демонстрационное значение. Реальный баланс Stars не подключён.
   </div>
   <button onclick="openWithdraw()">ВЫВЕСТИ ⭐</button>
  </section>
@@ -127,35 +128,37 @@ input:focus{border-color:#73d992}
   <div class="profile">
    <div class="avatar">♟</div>
    <div>
-    <div class="profile-name" id="username">Гость</div>
-    <div class="label" id="userstatus">PROFILE</div>
+    <div class="profile-name" id="username">Загрузка...</div>
+    <div class="label" id="userstatus">ПОДКЛЮЧЕНИЕ</div>
    </div>
   </div>
+  <div class="notice" id="userId" style="margin-top:14px"></div>
  </section>
 </main>
 
 <section id="withdraw" class="page">
  <section class="card">
   <h2 class="section-title">Заявка на вывод ⭐</h2>
+
   <p class="notice">
-   Здесь будет оформление заявки на получение Stars.
-   Сейчас доступен только предварительный просмотр формы.
+   Укажи количество Stars. Заявка будет сохранена
+   и отправлена на рассмотрение.
   </p>
 
-  <label class="label" for="phone">НОМЕР ТЕЛЕФОНА</label>
-  <input id="phone" type="tel" placeholder="+7 000 000-00-00"
-   autocomplete="off">
-
   <label class="label" for="amount">КОЛИЧЕСТВО STARS</label>
-  <input id="amount" type="number" min="1" placeholder="Например, 50">
+  <input id="amount" type="number" min="1" max="100"
+   placeholder="Например, 50">
 
   <div class="notice" style="margin-top:12px">
-   Данные этой формы не отправляются и не сохраняются.
-   Подтверждение Telegram должно проходить непосредственно
-   через официальный интерфейс Telegram.
+   Отправка заявки не означает автоматический перевод Stars.
   </div>
 
-  <button onclick="previewRequest()">ПРОДОЛЖИТЬ</button>
+  <button id="sendButton" onclick="sendRequest()">
+   ОТПРАВИТЬ ЗАЯВКУ
+  </button>
+
+  <div id="status" class="notice"></div>
+
   <button class="back" onclick="goHome()">НАЗАД</button>
  </section>
 </section>
@@ -171,14 +174,6 @@ input:focus{border-color:#73d992}
 
    <p>
    В данный момент этот раздел находится в разработке.
-   Мы хотим подготовить его так, чтобы всё работало
-   корректно и пользоваться им было удобно.
-   </p>
-
-   <p>
-   Пожалуйста, загляните немного позже. Как только
-   функция станет доступна, вы сможете воспользоваться
-   ею прямо в приложении.
    </p>
 
    Благодарим за ожидание и доверие к NOIR GIFTS.
@@ -191,86 +186,13 @@ input:focus{border-color:#73d992}
 
 <script>
 const tg = window.Telegram?.WebApp;
- const API = "https://noir-gifts-bot.y8w9v8y9cz.workers.dev";
+const API = "https://noir-gifts-bot.y8w9v8y9cz.workers.dev";
 
-async function registerTelegram() {
-  if (!tg?.initData) {
-    alert("Открой NOIR GIFTS через Telegram");
-    return;
-  }
-
-  const response = await fetch(API + "/api/register", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ initData: tg.initData })
-  });
-
-  const data = await response.json();
-
-  if (!response.ok || !data.ok) {
-    throw new Error(data.error || "Ошибка регистрации");
-  }
-
-  return data.user;
-}
-
-async function sendWithdrawalRequest(amount) {
-  const response = await fetch(API + "/api/request", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      initData: tg.initData,
-      amount: Number(amount)
-    })
-  });
-
-  const data = await response.json();
-
-  if (!response.ok || !data.ok) {
-    throw new Error(data.error || "Не удалось отправить заявку");
-  }
-
-  return data;
-}
-const API_URL = "https://noir-gifts-bot.y8w9v8y9cz.workers.dev";
-
-async function registerUser() {
-  if (!tg?.initData) return;
-
-  try {
-    const response = await fetch(`${API_URL}/api/register`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ initData: tg.initData })
-    });
-
-    const result = await response.json();
-
-    if (result.ok) {
-      console.log("NOIR GIFTS: пользователь зарегистрирован", result.profile);
-    } else {
-      console.error("Ошибка регистрации:", result.error);
-    }
-  } catch (error) {
-    console.error("Ошибка подключения к серверу:", error);
-  }
-}
+let telegramRegistered = false;
+let currentUser = null;
 
 tg?.ready();
 tg?.expand();
-registerUser();
-if(tg){
- tg.ready();
- tg.expand();
-
- const user = tg.initDataUnsafe?.user;
- if(user){
-  document.getElementById("username").textContent =
-   user.first_name || "Пользователь";
-  document.getElementById("userstatus").textContent =
-   "TELEGRAM CONNECTED";
- }
-}
 
 function showPage(id){
  document.querySelectorAll(".page").forEach(page=>{
@@ -292,19 +214,103 @@ function showGift(name){
  showPage("giftpage");
 }
 
-function previewRequest(){
- const amount = Number(document.getElementById("amount").value);
+async function registerUser(){
+ const nameElement = document.getElementById("username");
+ const statusElement = document.getElementById("userstatus");
+ const idElement = document.getElementById("userId");
 
- if(!amount || amount < 1){
-  alert("Укажите корректное количество Stars.");
+ if(!tg?.initData){
+  nameElement.textContent = "Гость";
+  statusElement.textContent = "ОТКРОЙТЕ ЧЕРЕЗ TELEGRAM";
   return;
  }
 
- alert(
-  "Это предварительный просмотр формы. " +
-  "Заявки пока не отправляются: подключение сервера ещё не выполнено."
- );
+ try{
+  statusElement.textContent = "РЕГИСТРАЦИЯ...";
+
+  const response = await fetch(API + "/api/register", {
+   method:"POST",
+   headers:{"Content-Type":"application/json"},
+   body:JSON.stringify({initData:tg.initData})
+  });
+
+  const result = await response.json();
+
+  if(!response.ok || !result.ok){
+   throw new Error(result.error || "Ошибка регистрации");
+  }
+
+  currentUser = result.user;
+  telegramRegistered = true;
+
+  nameElement.textContent =
+   currentUser.first_name || "Пользователь";
+
+  statusElement.textContent = "TELEGRAM CONNECTED";
+  idElement.textContent = "ID: " + currentUser.id;
+
+ }catch(error){
+  statusElement.textContent = "ОШИБКА РЕГИСТРАЦИИ";
+  console.error(error);
+ }
 }
+
+async function sendRequest(){
+ const amountInput = document.getElementById("amount");
+ const status = document.getElementById("status");
+ const button = document.getElementById("sendButton");
+
+ const amount = Number(amountInput.value);
+
+ if(!Number.isInteger(amount) || amount < 1 || amount > 100){
+  status.textContent = "Укажи сумму от 1 до 100 Stars.";
+  return;
+ }
+
+ if(!tg?.initData){
+  status.textContent = "Открой приложение через Telegram.";
+  return;
+ }
+
+ if(!telegramRegistered){
+  status.textContent = "Сначала дождись регистрации.";
+  return;
+ }
+
+ button.disabled = true;
+ button.textContent = "ОТПРАВКА...";
+ status.textContent = "";
+
+ try{
+  const response = await fetch(API + "/api/request", {
+   method:"POST",
+   headers:{"Content-Type":"application/json"},
+   body:JSON.stringify({
+    initData:tg.initData,
+    amount:amount
+   })
+  });
+
+  const result = await response.json();
+
+  if(!response.ok || !result.ok){
+   throw new Error(result.error || "Не удалось отправить заявку");
+  }
+
+  status.textContent =
+   "Заявка №" + result.request_id + " успешно отправлена на рассмотрение.";
+
+  amountInput.value = "";
+
+ }catch(error){
+  status.textContent = "Ошибка: " + error.message;
+ }finally{
+  button.disabled = false;
+  button.textContent = "ОТПРАВИТЬ ЗАЯВКУ";
+ }
+}
+
+registerUser();
 </script>
 
 </body>
